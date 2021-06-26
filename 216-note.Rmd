@@ -1,0 +1,668 @@
+---
+title: "Biostatistics 216 Notes (2020 Fall)"
+author: "ZHAODONG WU"
+date: "6/21/2021"
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: lumen
+---
+<font size="4"> Instructor: Sudipto Banerjee
+
+[<font size="3"> Textbook: Introduction To Linear Algebra (Fifth Edition), GILBERT STRANG, Massachusetts Institute of Technology](http://math.mit.edu/~gs/linearalgebra/)
+
+# Introduction to Vectors
+
+## Vectors and Linear Combinations
+
+### Introduction
+
+$\diamondsuit$ **Column Vectors:**
+
+$$
+v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} \text{,  is a} \textbf{ 2} \boldsymbol{\times} \textbf{1 matrix.}
+$$
+
+$\diamondsuit$ **Row Vectors:**
+
+$$
+v^{T} = \begin{bmatrix} v_1 & v_2 \end{bmatrix} \text{,  is a} \textbf{ 1} \boldsymbol{\times} \textbf{2 matrix.}
+$$
+
+### Important operations of matrix
+
+$\diamondsuit$ **Addition of vectors:**
+
+$$
+u = \begin{bmatrix} u_1 \\ u_2 \end{bmatrix}, v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} ,\\
+~\\
+\Rightarrow u+v = \begin{bmatrix} u_1+v_1 \\ u_2+v_2 \end{bmatrix}.
+$$
+
+$\diamondsuit$ **Scalar Multiplication (Stretching):**
+
+$$
+\ v \text{ is a vector, c a scalar}, v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}, \\
+\Rightarrow cv = \begin{bmatrix} cv_1 \\ cv_2 \end{bmatrix}.
+$$
+
+### Linear combination
+$$
+\text{n vectors: }u_1, u_2, \cdots, u_n \\
+\text{n scalars: }\alpha_1, \alpha_2, \cdots, \alpha_n \\
+\Rightarrow \text{Linear Combination: } \sum_{i=1}^{n}\alpha_i u_i = \alpha_1u_1 +  \alpha_2u_2 + \cdots + \alpha_nu_n
+$$
+
+$\diamondsuit$ **Linear Interpolation**
+
+Suppose we have measured on outcome variables: $y_{00}/f(0, 0), y_{10}/f(1,0), y_{01}/f(0,1)$ and $y_{11}/f(1,1)$, how to predict/interpolate at $(a,b)$ in the area of rectangle composed by 4 points?
+
+$$
+f(a,b) = (1-a)(1-b) \cdot y_{00} + a(1-b) \cdot y_{10} + (1-a)b \cdot y_{01} + ab \cdot y_{11} \\
+\text{ (use opposite coefficient, i.e. distance from opposite point)}
+$$
+
+Apply Linear Interpolation:
+
+$$
+f(a,0) = (1-a) \cdot y_{00} + a \cdot y_{10} \\
+f(a,1) = (1-a) \cdot y_{01} + a \cdot y_{11}
+$$
+
+The concrete model we use is:
+$$
+f(x,y) = (1-x)(1-y) \cdot y_{00} + x(1-y) \cdot y_{10} + (1-x)y \cdot y_{01} + xy \cdot y_{11}
+$$
+
+And more general one: 
+$$
+f(x, y) =  \beta_0+\beta_1x+\beta_2y+\beta_3xy, \\
+\begin{eqnarray} \\
+\text{where: }
+ \beta_0 &=& y_{00} = f(0,0), \\ 
+\beta_1 &=& y_{10}-y_{00} = f(1,0)-f(0,0), \\
+\beta_2 &=& y_{01}-y_{00} = f(0,1)-f(0,0), \\
+\beta_3 &=& y_{11}+y_{00}-y_{10}-y_{01} = f(1,1)+f(0,0)-f(1,0)-f(0,1).
+\end{eqnarray}
+$$
+
+$\diamondsuit$ **Application of Linear Interpolation to images:**
+
+**Choice 1**: Use **24** points around (a, b) to make prediction:
+
+Advantage: We can consider the relationship of (a, b) and every other points.
+
+Weakness: High expenses
+
+**Choice 2**: Use **4** points (like previous progress) around (a, b) to make prediction:
+
+Advantage: Cost-effective
+
+Weakness: We may ignore the important relationship of (a, b) and some points.
+
+## Lengths and Dot Products
+
+### Lengths
+
+Suppose the vector of the point $(x_1, x_2)$ from the original point is $\textbf{x} = (x_1, x_2)$, then **length** of this vector is :
+$$
+\| \textbf{x} \| = \sqrt{x_1^{2}+x_2^{2}}, \text{ (i.e. } \| \textbf{x} \|^{2} = x_1^{2}+x_2^{2})
+$$
+
+Further suppose that two vectors from the original point are respectively $\textbf{x} = (x_1, x_2)$, $\textbf{y} = (y_1, y_2)$, then the distance of two points(i.e. the length of the vector $\textbf{x}-\textbf{y}$) is: 
+
+$$
+\begin{eqnarray}
+\|\textbf{x}-\textbf{y} \|^{2} = (x_1-y_1)^{2} + (x_2-y_2)^{2} &=& x_1^{2}+x_2^{2}+y_1^{2}+y_2^{2}-2(x_1y_1+x_2y_2) \\
+&=& \|\textbf{x} \|^{2} + \|\textbf{y} \|^{2} - 2 \textbf{x} \cdot \textbf{y}
+\end{eqnarray}
+$$
+
+### Dot products
+
+$\diamondsuit$ **Dot product of two vectors:**
+
+$$
+\text{If } \textbf{x} = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}, \textbf{y} = \begin{bmatrix} y_1 \\ y_2 \end{bmatrix}, \text{then } \textbf{x} \cdot \textbf{y} = x_1y_1 + x_2y_2.
+$$
+
+$\diamondsuit$ **Dot product of three vectors:**
+
+$$
+\text{If } \textbf{x} = \begin{bmatrix} x_1 \\ x_2 \\x_3 \end{bmatrix}, \textbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ y_3 \end{bmatrix}, \text{then } \textbf{x} \cdot \textbf{y} = x_1y_1 + x_2y_2 +x_3y_3.
+$$
+
+$\diamondsuit$ **Dot product of n-dimensional vectors (known as inner product):**
+
+$$
+\text{If } \textbf{x} = \begin{bmatrix} x_1 \\ x_2 \\x_3 \\ \vdots \\ x_n \end{bmatrix}, \textbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ y_3 \\ \vdots \\ y_n\end{bmatrix}, \text{then } \textbf{x} \cdot \textbf{y} = x_1y_1 + x_2y_2 +x_3y_3 + \cdots+x_ny_n =\sum_{i=1}^{n}x_iy_i.
+$$
+
+$\diamondsuit$ **Squared length of a vector (Definition of norm in n-dimensions):**
+
+$$
+\text{If } \textbf{x} = \begin{bmatrix} x_1 \\ x_2 \\x_3 \\ \vdots \\ x_n \end{bmatrix}, \text{ then } \textbf{x} \cdot \textbf{x} = \sum_{i=1}^{n}x_i^{2} = \| \textbf{x} \|^{2}
+$$
+
+$\diamondsuit$ **Properties of dot product: **
+
+**(1) Commutative**
+$$
+\text{If } \textbf{a} = \begin{bmatrix} a_1 \\ a_2 \\a_3 \\ \vdots \\ a_n \end{bmatrix},  \textbf{b} = \begin{bmatrix} b_1 \\ b_2 \\b_3 \\ \vdots \\ b_n \end{bmatrix}, 
+$$
+
+$$
+\begin{eqnarray}
+\text{then  }\textbf{a} \cdot \textbf{b} &=& \sum_{i=1}^{n}a_ib_i = a_1b_1 + \cdots + a_nb_n = b_1a_1+ \cdots + b_na_n \\
+&=& \sum_{i=1}^{n}b_ia_i = \textbf{b} \cdot \textbf{a} 
+\end{eqnarray}
+$$
+
+**(2) Distributive**
+$$
+\text{If } \textbf{a} = \begin{bmatrix} a_1 \\ a_2 \\a_3 \\ \vdots \\ a_n \end{bmatrix},  \textbf{b} = \begin{bmatrix} b_1 \\ b_2 \\b_3 \\ \vdots \\ b_n \end{bmatrix}, \textbf{c} = \begin{bmatrix} c_1 \\ c_2 \\c_3 \\ \vdots \\ c_n \end{bmatrix}, \\
+$$
+
+$$
+\begin{eqnarray}
+\text{then  }\textbf{a} \cdot (\textbf{ b}+ \textbf{c }) &=& \sum_{i=1}^{n}a_i(b_i+c_i) = a_1(b_1+c_1) + \cdots + a_n(b_n+c_n) = a_1b_1+a_1c_1+ \cdots + a_nb_n+a_nc_n \\
+&=& (a_1b_1 + \cdots + a_nb_n) + (a_1c_1+ \cdots + a_nc_n) \\
+&=& \sum_{i=1}^{n}a_ib_i + \sum_{i=1}^{n}a_ic_i \\
+&=& \textbf{a} \cdot \textbf{b } + \textbf{ a} \cdot \textbf{c}
+\end{eqnarray}
+$$
+
+Similarly, we have:
+$$
+ (\textbf{ a}+ \textbf{b }) \cdot \textbf{c} = \textbf{a} \cdot \textbf{c } + \textbf{ b} \cdot \textbf{c }
+$$
+
+**(3) Associative ?**
+
+Notice that $(\textbf{ a} \cdot \textbf{b }) \cdot \textbf{c }$ **does not make sense** since dot product is only used between two vectors, $\textbf{ a} \cdot \textbf{b }$ is already a real number so the dot product of real number and vector is not meaningful.
+
+Meanwhile we can get that $(\textbf{ a} \cdot \textbf{b })  \textbf{ c } \ne \textbf{ a } (\textbf{ b} \cdot \textbf{c })$ since:
+$$
+(\textbf{ a} \cdot \textbf{b })  \textbf{ c } = \begin{bmatrix} (\textbf{ a} \cdot \textbf{b })c_1 \\ \vdots \\ (\textbf{ a} \cdot \textbf{b })c_n \end{bmatrix} = \begin{bmatrix} (\sum_{i=1}^{n}a_ib_i)c_1 \\ \vdots \\ (\sum_{i=1}^{n}a_ib_i)c_n  \end{bmatrix} 
+\text{ and }
+\textbf{ a } (\textbf{ b} \cdot \textbf{c }) = \begin{bmatrix} (\textbf{ b} \cdot \textbf{c })a_1 \\ \vdots \\ (\textbf{ b} \cdot \textbf{c })a_n \end{bmatrix} = \begin{bmatrix} (\sum_{i=1}^{n}b_ic_i)a_1 \\ \vdots \\ (\sum_{i=1}^{n}b_ic_i)a_n  \end{bmatrix} 
+$$
+
+they are not the same.
+
+$\diamondsuit$ **Hypotenuse of right triangle**
+
+Suppose two sides of the right triangle is respectively $\textbf{x}$ and $\textbf{y}$ then the vector of hypotenuse is $\textbf{x} - \textbf{y}$. 
+
+The length of hypotenuse is (using the distributive property of dot product):
+$$
+\begin{eqnarray}
+\| \textbf{x} - \textbf{y} \|^{2} = (\textbf{x} - \textbf{y}) \cdot (\textbf{x} - \textbf{y}) &=& (\textbf{x} - \textbf{y}) \cdot \textbf{x} - (\textbf{x} - \textbf{y}) \cdot \textbf{y} \\
+&=& \textbf{x} \cdot \textbf{x} + \textbf{y} \cdot \textbf{y} - \textbf{x} \cdot \textbf{y} - \textbf{y} \cdot \textbf{x} \\
+&=& \|\textbf{x} \|^{2} + \|\textbf{y} \|^{2} -2 \textbf{ x} \cdot \textbf{y}
+\end{eqnarray}
+$$
+
+Since in a right triangle, $\| \textbf{x} - \textbf{y} \|^{2} = \|\textbf{x} \|^{2} + \|\textbf{y} \|^{2}$ according to **Pythagorean Theorem**, we can get $\textbf{ x} \cdot \textbf{y} = 0$.
+
+In conclusion, $\textbf{ x} \cdot \textbf{y} = 0$ if $\textbf{x}$ and $\textbf{y}$ are orthogonal.
+
+### Law of Cosines
+
+$\diamondsuit$ **Theorem**: 
+$$
+b^{2} = a^{2}+c^{2}-2ac \cdot cosB
+$$
+
+**Proof:**
+
+In the two-dimensional coordinate system a triangle is composed of three straight lines connected by points $A, B, C$ and $\angle A, \angle B, \angle C$ are three angles opposite the three sides  $a(BC), b(AC), c(AB)$. We assume that point $B$ is the original point and line BC is on the x-axis, then the coordinates of $C$ is $(a, 0)$ and the coordinates of $A$ is $(c \cdot cosB, c \cdot sinB)$. 
+
+The vector $\textbf{b}$ is $(a-c \cdot cosB, -c \cdot sinB)$, therefore the length of $\textbf{b}$ is:
+
+
+$$
+\begin{eqnarray}
+\|\textbf{b} \|^{2} &=& (a-c \cdot cosB)^{2} + c^{2} \cdot sinB^{2} \\
+&=& a^{2}-2ac \cdot cosB + c^{2} \cdot cosB^{2} + c^{2} \cdot sinB^{2} \\
+&=& a^{2}+c^{2}-2ac \cdot cosB \\
+&=& b^{2} \space(\text{ definition of length }) 
+\end{eqnarray}
+$$
+
+The proof is done.
+
+### Law of Sines
+
+$\diamondsuit$ **Theorem**: 
+$$
+\frac{a}{sinA} = \frac{b}{sinB} = \frac{c}{sinC}
+$$
+
+**Proof:** 
+
+Similarly, we assume that point $C$ is the original point and line BC is still on the x-axis, then the coordinates of $B$ is $(-a, 0)$ and the coordinates of $A$ is $(-b \cdot cosc, b \cdot sinC)$. 
+
+$$
+c^{2} = a^{2}+b^{2}-2ab \cdot cosC
+$$
+
+The height of triangle $ABC$ (i.e. ordinate of point $A$) remains unchanged, therefore $c \cdot sinB = b \cdot sinC \Rightarrow \frac{b}{sinB} = \frac{c}{sinC}$.
+Further we can prove that $\frac{a}{sinA} = \frac{b}{sinB}$ and $\frac{a}{sinA} = \frac{c}{sinC}$ by using different points to be original.
+
+Therefore 
+
+$$
+\frac{a}{sinA} = \frac{b}{sinB} = \frac{c}{sinC}
+$$
+
+The proof is done.
+
+$\diamondsuit$ **How to define Law of Sines from just algebra?**
+
+From Law of Cosines and $sin^2C+cos^2C = 1$ we know that:
+
+$$
+\begin{eqnarray}
+cosC &=& \frac{a^2+b^2-c^2}{2ab} \\
+\Rightarrow sin^2C &=& 1-\frac{(a^2+b^2-c^2)^2}{4a^2b^2} \\
+\Rightarrow \frac{sin^2C}{c^2} &=& \frac{1}{c^2}- \frac{(a^2+b^2-c^2)^2}{4a^2b^2c^2} = \frac{4a^2b^2-(a^2+b^2-c^2)^2}{4a^2b^2c^2} = \frac{2(a^2b^2+a^2c^2+b^2c^2)-(a^4+b^4+c^4)}{4a^2b^2c^2} \\
+\end{eqnarray}
+$$
+
+Similarly, since $sin^2A+cos^2A = 1$ and $sin^2B+cos^2B = 1$, we can get:
+
+$$
+\frac{sin^2A}{a^2} = \frac{1}{a^2}-\frac{(b^2+c^2-a^2)^2}{4a^2b^2c^2} = \frac{4b^2c^2-(b^2+c^2-a^2)^2}{4a^2b^2c^2} = \frac{2(a^2b^2+a^2c^2+b^2c^2)-(a^4+b^4+c^4)}{4a^2b^2c^2} \\
+~\\
+\frac{sin^2B}{b^2} = \frac{1}{b^2} - \frac{(a^2+c^2-b^2)^2}{4a^2b^2c^2} = \frac{4a^2c^2-(a^2+c^2-b^2)^2}{4a^2b^2c^2} = \frac{2(a^2b^2+a^2c^2+b^2c^2)-(a^4+b^4+c^4)}{4a^2b^2c^2} 
+$$
+
+Therefore $\frac{sin^2A}{a^2} = \frac{sin^2B}{b^2} = \frac{sin^2C}{c^2} \Rightarrow \frac{sinA}{a} = \frac{sinB}{b} = \frac{sinC}{c}$, result remains unchanged no matter which fraction we want to calculate.
+
+### Dot product and Laws of Cosines
+
+From the previous section:
+
+$$
+\|\textbf{x}-\textbf{y} \|^{2} =  \|\textbf{x} \|^{2} + \|\textbf{y} \|^{2} - 2 \textbf{x} \cdot \textbf{y}
+$$
+
+Suppose the angle between two vectors $\textbf{x}$ and $\textbf{y}$ is $\theta$, by Law of Cosines we can get the length of the vector $\textbf{x}- \textbf{y}\|^{2}$:
+
+$$
+\| \textbf{x}- \textbf{y}\|^{2} = \|\textbf{x} \|^{2} + \|\textbf{y} \|^{2}-2\|\textbf{x} \| \cdot \|\textbf{y} \| \cdot cos \theta
+$$
+
+Therefore:
+$$
+\textbf{x} \cdot \textbf{y} = \|\textbf{x} \|\|\textbf{y} \| \cdot cos \theta
+$$
+
+$\diamondsuit$ **Definition of $cos \theta$ in vector algebra**
+
+$$
+cos \theta = \frac{\textbf{x} \cdot \textbf{y}}{\|\textbf{x} \| \cdot \|\textbf{y} \|}
+$$
+
+Note that this definition applies to **any dimension**.
+
+$\diamondsuit$ **Cauchy-Schwartz Inequality**
+
+The Cauchy-Schwartz Inequality states that for all vectors $\textbf{x}$ and $\textbf{y}$ of an inner product space it is true that:
+$$
+|\textbf{x} \cdot \textbf{y} | \le \|\textbf{x} \| \cdot \|\textbf{y} \|
+$$
+
+**Proof 1 (Geometry): **
+
+In 2-dimensional / 3-dimensional condition:
+We can get the range of $cos \theta$ from geometry: $-1 \le cos \theta \le 1$.
+
+Then apply the definition of $cos \theta$:
+$$
+-1 \le \frac{\textbf{x} \cdot \textbf{y}}{\|\textbf{x} \| \cdot \|\textbf{y} \|} \le 1
+$$
+
+According to the definition of absolute value:
+$$
+| \frac{\textbf{x} \cdot \textbf{y}}{\|\textbf{x} \| \cdot \|\textbf{y} \|}| \le 1 \Rightarrow \frac{|\textbf{x} \cdot \textbf{y}|}{\|\textbf{x} \| \cdot \|\textbf{y} \|} \le 1 \\
+$$
+
+i.e.
+$$
+|\textbf{x} \cdot \textbf{y} | \le \|\textbf{x} \| \cdot \|\textbf{y} \|
+$$
+
+Note that $|\textbf{x} \cdot \textbf{y} | = \|\textbf{x} \| \cdot \|\textbf{y} \|$ when $cos \theta = 0$ or $cos \theta =1$.
+
+
+**Proof 2 (Algebra): **
+Suppose the Cauchy-Schwartz Inequality is true, and $\textbf{x} = (x_1, x_2), \textbf{ y} = (y_1, y_2)$ then:
+$$
+\begin{eqnarray}
+&& |\textbf{x} \cdot \textbf{y} | \le \|\textbf{x} \| \cdot \|\textbf{y} \| \\
+&\Leftrightarrow& |\textbf{x} \cdot \textbf{y} |^{2} \le  \|\textbf{x} \|^{2} \cdot \|\textbf{y} \|^{2} \\
+&\Leftrightarrow& (x_1y_1 + x_2y_2)^{2} \le (x_1^{2}+x_2^{2}) \cdot (y_1^{2}+y_2^{2}) \space \space \text{  True?}
+\end{eqnarray}
+$$
+
+Define a function $f(x,y)$ and we need to prove that $f(x,y) \ge 0$:
+$$
+f(x,y) = (x_1^{2}+x_2^{2}) \cdot (y_1^{2}+y_2^{2}) - (x_1y_1 + x_2y_2)^{2}
+$$
+
+Then expand this function:
+$$
+\begin{eqnarray}
+f(x,y) &=& (x_1^{2}+x_2^{2}) \cdot (y_1^{2}+y_2^{2}) - (x_1y_1 + x_2y_2)^{2} \\
+&=& (x_1^{2}y_1^{2} + x_1^{2}y_2^{2} + x_2^{2}y_1^{2} + x_2^{2}y_2^{2}) - (x_1^{2}y_1^{2}+x_2^{2}y_2^{2} + 2x_1y_1x_2y_2) \\
+&=& x_2^{2}y_1^{2} + x_2^{2}y_2^{2}- 2x_1y_1x_2y_2 \\
+&=& (x_1y_2 - x_2y_1)^{2} \\
+&\ge& 0
+\end{eqnarray}
+$$
+Therefore the inequality $(x_1y_1 + x_2y_2)^{2} \le (x_1^{2}+x_2^{2}) \cdot (y_1^{2}+y_2^{2})$ is true, i.e.
+$$
+|\textbf{x} \cdot \textbf{y} | \le \|\textbf{x} \| \cdot \|\textbf{y} \|
+$$
+
+The proof is done.
+
+### Geometric & Arithmetic mean
+
+Since it is true that:
+$$
+\begin{eqnarray}
+&&(a-b)^{2} \ge 0 \\ 
+&\Rightarrow& a^{2}+b^{2}-2ab \ge 0 \\
+&\Rightarrow& \frac{a^{2}+b{^{2}}}{2} \ge ab  \space \space (\star)\\
+\end{eqnarray}
+$$
+
+Suppose $x = a^{2}, y = b^{2}$, then:
+$$
+\frac{x+y}{2} \ge \sqrt{xy} \\
+\text{where }  \space \sqrt{xy} \space \text{ is the geometric mean and } \space \frac{x+y}{2} \space \text{ is the arithmetic mean}.
+$$
+
+We can conclude that the arithmetic mean is greater than or equal to geometric mean.
+
+$\diamondsuit$ **Application of Arithmetic mean $\ge$ Geometric mean**
+
+We can use this inequality to get **Cauchy-Schwartz Inequality**:
+
+$$
+\begin{eqnarray}
+|\textbf{x} \cdot \textbf{y} | &=& |x_1y_1 + x_2y_2| \\
+&\le& |x_1y_1| + |x_2y_2| \space \space (\text{Triangle Inequality}) \\
+&=& |x_1||y_1| + |x_2||y_2| \\
+&\le& \frac{x_1^{2}+y_1^{2}}{2} + \frac{x_2^{2}+y_2^{2}}{2} \space \space (\text{application of }(\star) )
+\end{eqnarray}
+$$
+
+Suppose $\|\textbf{x} \|=1, \|\textbf{y} \| = 1$ (unit vectors), then:
+
+$$
+\begin{eqnarray}
+|\textbf{x} \cdot \textbf{y} | &\le& \frac{x_1^{2}+y_1^{2}}{2} + \frac{x_2^{2}+y_2^{2}}{2} \\
+&=& \frac{x_1^{2}+x_2^{2}}{2} + \frac{y_1^{2}+y_2^{2}}{2}  \\
+&=& 1 \\
+&=& \|\textbf{x} \| \cdot \|\textbf{y} \|
+\end{eqnarray}
+$$
+
+For general case, if $\|\textbf{x} \| \ne 1$ or $\|\textbf{y} \| \ne 1$, then we can define the unit vector:
+
+Let $\textbf{u} = \frac{\textbf{x}}{\|\textbf{x} \|}$ and $\textbf{v} = \frac{\textbf{y}}{\|\textbf{y} \|}$,
+
+Apply what we know for unit vectors:
+
+$$
+\begin{eqnarray}
+&&|\textbf{x} \cdot \textbf{y} | \le 1 \\
+&\Rightarrow& |\frac{\textbf{x}}{\|\textbf{x} \|} \cdot \frac{\textbf{y}}{\|\textbf{y} \|}| \le 1 \\
+&\Rightarrow& \frac{|\textbf{x} \cdot \textbf{y}|}{\|\textbf{x} \| \cdot \|\textbf{y} \|} \le 1 \\
+&\Rightarrow& |\textbf{x} \cdot \textbf{y}| \le \|\textbf{x} \| \cdot \|\textbf{y} \|
+\end{eqnarray}
+$$
+
+We can still get the result of **Cauchy-Schwartz Inequality** correctly.
+
+### Parallelism and Orthogonality
+
+$\diamondsuit$ Parallelism
+
+Two vectors $\textbf{x}$ and $\textbf{y}$ are parallel, ( i.e. $\textbf{x} \parallel \textbf{y}$ ) if $\space \textbf{y} = c \textbf{x}, c \in \mathbb{R}$ (scalar multiple).
+
+$\diamondsuit$ Orthogonality 
+
+Two vectors $\textbf{x}$ and $\textbf{y}$ are orthogonal, ( i.e. $\textbf{x} \perp \textbf{y}$ ) if $\space \textbf{x} \cdot \textbf{y} = \textbf{y} \cdot \textbf{x} = 0.$
+
+### Linear combination of vectors
+
+We say that $\textbf{y}$ is a linear combination of vectors $\textbf{x}_1$ and $\textbf{x}_2$ if $\exists$ scalars $c_1$, $c_2$ such that:
+
+$$
+\textbf{y} = c_1\textbf{x}_1+ c_2\textbf{x}_2
+$$
+
+## Matrices
+
+In 2-dimension system can you give me 2 vectors $\textbf{x}_1$ and $\textbf{x}_2$ such that any vectors in $\mathbb{R}^2$ can be represented as a linear combination of $\textbf{x}_1, \textbf{x}_2$.
+
+$$
+\text{Let } \space \textbf{x}_1 = \begin{bmatrix} 1 \\ 0\end{bmatrix}, \textbf{x}_2= \begin{bmatrix} 0 \\ 1 \end{bmatrix}, \text{ then} \begin{bmatrix} a \\ b \end{bmatrix}  = a\textbf{x}_1+b \textbf{x}_2 = a \begin{bmatrix} 1 \\ 0\end{bmatrix}+b \begin{bmatrix} 0 \\ 1 \end{bmatrix}.
+$$
+
+**Another example:**
+
+$$
+\text{Suppose } \space \textbf{x}_1 = \begin{bmatrix} 1 \\ 2\end{bmatrix}, \textbf{x}_2= \begin{bmatrix} 2 \\ 3 \end{bmatrix}, \text{ compute }\textbf{b} = 3\textbf{x}_1+5\textbf{x}_2: \\
+~\\
+\textbf{b} = 3 \begin{bmatrix} 1 \\ 2\end{bmatrix}+5 \begin{bmatrix} 2 \\ 3 \end{bmatrix} = \begin{bmatrix} 13 \\ 21 \end{bmatrix}.
+$$
+
+In terms of matrix, what matrix acts on $\begin{bmatrix} 3 \\ 5 \end{bmatrix} \Rightarrow \textbf{b} \space ?$
+
+$$
+\begin{bmatrix} 1 &2 \\ 2&3 \end{bmatrix} \begin{bmatrix} 3 \\ 5 \end{bmatrix} = \begin{bmatrix} (1 &2) \cdot(3 & 5) \\ (2 &3) \cdot(3 & 5) \end{bmatrix} = \begin{bmatrix} 13 \\ 21 \end{bmatrix} = \textbf{b}
+$$
+
+**What if we turn this example around?**
+
+Suppose $\textbf{b} = \begin{bmatrix} 13 \\ 21 \end{bmatrix}$, what scalars do we need to write $\textbf{b}$ as a linear combination of $\textbf{x}_1 = \begin{bmatrix} 1 \\ 2\end{bmatrix}, \textbf{x}_2= \begin{bmatrix} 2 \\ 3 \end{bmatrix}$?
+
+$$
+\begin{eqnarray*}
+&& c_1\begin{bmatrix} 1 \\ 2\end{bmatrix} + c_2 \begin{bmatrix} 2 \\ 3\end{bmatrix} = \begin{bmatrix} 13 \\ 21 \end{bmatrix} \\
+~\\
+&\Rightarrow& \space
+\left \{
+\begin{array}
+ cc_1 +2c_2= 13 \\
+ 2c_1+3c_2 = 21
+\end{array}
+\right. \\
+~\\
+&\Rightarrow& \space
+\left \{
+\begin{array}
+ cc_1 = 3 \\
+ c_2 = 5
+\end{array}
+\right.
+\end{eqnarray*}
+$$
+
+In conclusion, we look at two problems:
+
+$\clubsuit$. Input $\rightarrow$ Output
+
+$\space \space \space \space$ Input: 2 vectors, 2 scalars
+
+$\space \space \space \space$ Output: Linear Combination
+
+$\spadesuit$. Output & 2 vectors $\rightarrow$ scalars
+
+$\space \space \space \space$ **2 is the inverse of 1.**
+
+**Understand in terms of matrices:**
+
+$\clubsuit$
+$$
+\begin{eqnarray}
+&& \underbrace{\begin{bmatrix} 1 &2 \\ 2&3 \end{bmatrix}}_A  \underbrace{\begin{bmatrix} 3 \\ 5 \end{bmatrix}}_{\textbf{x}} = \underbrace{\begin{bmatrix} 13 \\ 21 \end{bmatrix}}_{\textbf{b}} \\
+~\\
+&\text{Better notation}: \space \textbf{a}_1 &= \begin{bmatrix} 1 \\ 2 \end{bmatrix}, \textbf{a}_2 = \begin{bmatrix} 2 \\ 3 \end{bmatrix} \text{ and } A = \begin{bmatrix} \textbf{a}_1 & \textbf{a}_2 \end{bmatrix}.
+\end{eqnarray}
+$$
+
+$\spadesuit$
+$$
+\begin{eqnarray}
+ \underbrace{\begin{bmatrix} 1 &2 \\ 2&3 \end{bmatrix}}_A  \underbrace{\begin{bmatrix}  \\  \end{bmatrix}}_{\textbf{x}} &= \underbrace{\begin{bmatrix} 13 \\ 21 \end{bmatrix}}_{\textbf{b}} \\
+~\\
+\Rightarrow \textbf{x} &= \begin{bmatrix} 3 \\ 5 \end{bmatrix}
+\end{eqnarray}
+$$
+
+We ask: From $\spadesuit$ is there a matrix $B$ such that $A\textbf{x} = \textbf{b} \rightarrow \textbf{x} = B\textbf{b}$? If yes, why not call $B = A^{-1}$?
+
+### An example of 1.3 Strang
+
+In $\mathbb{R}^{3}, A = \begin{bmatrix} \textbf{a}_1 & \textbf{a}_2 & \textbf{a}_3 \end{bmatrix}$, where
+
+$$
+\textbf{a}_1 = \begin{bmatrix} 1 \\ -1 \\ 0 \end{bmatrix}, \textbf{a}_2 = \begin{bmatrix} 0 \\ 1 \\ -1 \end{bmatrix}, \textbf{a}_3 = \begin{bmatrix} 0 \\ 0 \\ 1  \end{bmatrix}
+$$
+
+How to write $f(x_1,x_2,x_3) = x_1\textbf{a}_1+x_2\textbf{a}_2+x_3\textbf{a}_3$?
+
+$$
+f(x_1,x_2, x_3) = \begin{bmatrix} 1&0&0 \\ -1 & 1&0 \\ 0 & -1 & 1 \end{bmatrix}  \begin{bmatrix} x_1 \\ x_2 \\x_3\end{bmatrix} = \begin{bmatrix} x_1 \\ -x_1+x_2 \\ -x_2+x_3\end{bmatrix} =\textbf{b}
+$$
+
+How does A act on $\textbf{x}$?
+
+$$
+\begin{eqnarray}
+\text{Let }\textbf{b } &=& \begin{bmatrix} b_1 \\ b_2 \\b_3\end{bmatrix} =  \begin{bmatrix} x_1 \\ -x_1+x_2 \\ -x_2+x_3\end{bmatrix}, 
+\text{then } \textbf{x} = \begin{bmatrix} b_1 \\ b_1+b_2 \\ b_1+b_2+b_3\end{bmatrix}. \\
+~\\
+\text{Since} \textbf{ x} &=& B\textbf{b} = A^{-1} \textbf{b}, \text{ i.e. } \begin{bmatrix} b_1 \\ b_1+b_2 \\ b_1+b_2+b_3\end{bmatrix} = A^{-1}\begin{bmatrix} b_1 \\ b_2 \\b_3\end{bmatrix}, \text{ we can write }\textbf{x  } \text{three vectors:} \\
+~\\
+\textbf{ x} &=& \begin{bmatrix} b_1 \\ b_1+b_2 \\ b_1+b_2+b_3\end{bmatrix} = \begin{bmatrix} 1 \\1 \\1\end{bmatrix}b_1 + \begin{bmatrix} 0 \\1 \\1\end{bmatrix}b_2+ \begin{bmatrix} 0 \\0\\1\end{bmatrix}b_3 = A^{-1}\begin{bmatrix} b_1 \\ b_2 \\b_3\end{bmatrix}. \\
+~\\
+\end{eqnarray}
+$$
+
+$$
+\text{Therefore } A^{-1} = \begin{bmatrix} 1&0&0 \\ 1 & 1&0 \\ 1 & 1 & 1 \end{bmatrix}.
+$$
+
+### Elimination
+
+Suppose $A = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}$ and $\textbf{b} = \begin{bmatrix} b_1\\b_2 \end{bmatrix}$, we need to solve $A\textbf{x} =\textbf{b } (\text{ i.e.} \textbf{ x} = A^{-1}\textbf{b})$.
+
+In a $\mathbb{R}^{2}$ system, 
+
+$$
+\begin{eqnarray}
+&&\begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} b_1 \\ b_2 \end{bmatrix} \\
+~\\
+&\Rightarrow& 
+\space
+\left \{
+\begin{array}
+ aa_{11}x_1 +a_{12}x_2= b_1 \space \space \space (E_1) \\
+ a_{21}x_1 +a_{22}x_2= b_2 \space \space \space  (E_2)
+\end{array}
+\right.
+\end{eqnarray}
+$$
+
+Assume (not strictly necessary) $a_{11} \ne 0$, we can do the elimination $\Rightarrow$ eliminate $x_1$ from $E_2$, $E_1$ remains unchanged. That is, we seek for $\begin{bmatrix} a_{11} \\ a_{21}\end{bmatrix} \Rightarrow \begin{bmatrix} a_{11} \\0\end{bmatrix}$, i.e. annihilate $a_{21}$:
+
+$$
+\begin{eqnarray}
+\begin{bmatrix} 1 &0 \\ \alpha_1 & 1\end{bmatrix} \begin{bmatrix}a_{11} \\ a_{21}\end{bmatrix} &=& \begin{bmatrix} a_{11} \\0\end{bmatrix} \\
+~\\
+\Rightarrow \alpha_1 = -\frac{a_{21}}{a_{11}} \space (a_{11} &=& 0)
+\end{eqnarray}
+$$
+
+Translate to equations:
+
+$$
+\begin{eqnarray}
+E_1 &\Rightarrow& E_1 \space (\text{unchanged})\\
+E_2 &\Rightarrow& E_2 - \frac{a_{21}}{a_{11}}E_1 \\
+~\\
+&\Rightarrow&
+\space
+\left \{
+\begin{array}
+ aa_{11}x_1 +a_{12}x_2= b_1 \space \space \space (E_1^{\star}) \\
+ (a_{22} -\frac{a_{12}a_{21}}{a_{11}})x_2 = \widehat{b_2} \space \space \space  (E_2^{\star}) 
+\end{array}
+\right. \\
+~\\
+\text{where } \widehat{b_2} &=& b_2- \frac{a_{21}}{a_{11}}b_1.
+\end{eqnarray}
+$$
+
+If $a_{22} -\frac{a_{12}a_{21}}{a_{11}} \ne 0$, then we solve for $x_2$:
+$$
+x_2 = \frac{\widehat{b_2}}{a_{22} -\frac{a_{12}a_{21}}{a_{11}}} = \beta_2\widehat{b_2},\\
+~\\
+\text{where } \beta_2 = (a_{22} -\frac{a_{12}a_{21}}{a_{11}})^{-1}.
+$$
+
+Then we solve for $x_1$ (substitute $x_2$ into $E_1$):
+
+$$
+\begin{eqnarray}
+&&a_{11}x_1 +a_{12}\beta_2\widehat{b_2} = b_1 \\
+~\\
+&\Rightarrow& x_1 = \frac{b_1-a_{12}\beta_2\widehat{b_2}}{a_{11}} = \frac{b_1}{a_{11}}-{\frac{a_{12}}{a_{11}}\beta_2}(b_2- \frac{a_{21}}{a_{11}}b_1) = \beta_1b_1+ \widehat{\beta_2}b_2 \\
+~\\
+&\text{where }& \beta_1 =\frac{1}{a_{11}}+\frac{a_{12}a_{21}}{a_{11}^{2}} , \space\widehat{\beta_2} = -\frac{a_{12}}{a_{11}}\beta_2 =-\frac{a_{12}}{a_{11}} (a_{22} -\frac{a_{12}a_{21}}{a_{11}})^{-1}.
+\end{eqnarray}
+$$
+
+We can solve the system now:
+
+$$
+\begin{eqnarray}
+x_1 &=& \beta_1b_1+ \widehat{\beta_2}b_2 \\
+x_2 &=& \beta_2\widehat{b_2} = \beta_2(b_2- \frac{a_{21}}{a_{11}}b_1) = \widehat{\beta_1}b_1+\beta_2b_2 \\
+&\text{where }& \widehat{\beta_1} = \frac{a_{21}}{a_{11}}\beta_2 = \frac{a_{21}}{a_{11}}(a_{22} -\frac{a_{12}a_{21}}{a_{11}})^{-1}.
+\end{eqnarray}
+$$
+
+Therefore,
+
+$$
+\begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} \beta_1 & \widehat{\beta_2}\\ \widehat{\beta_1} & \beta_2 \end{bmatrix}\begin{bmatrix} b_1 \\ b_2 \end{bmatrix} 
+$$
+
+$\diamondsuit$ **Homework:**
+
+Prove that the $A^{-1}$ defined above is in fact:
+
+$$
+A^{-1} = \begin{bmatrix} 
+\phantom{-}\frac{a_{22}}{D} & - \frac{a_{12}}{D} \\
+-\frac{a_{21}}{D} & \phantom{-}\frac{a_{11}}{D}
+\end{bmatrix} \\
+~\\
+\text{where } D = a_{11}a_{22}-a_{12}a_{21}, \space \text{ i.e. det}(A).
+$$
+
+# Solving Linear Equations
+
